@@ -3,7 +3,8 @@
     "description": "Generates used opensource licenses report based on composer or yarn licenses list",
     "type": "project",
     "require": {
-        "symfony/console": "^4.1"
+        "symfony/console": "^4.1",
+        "composer/spdx-licenses": "^1.4"
     },
     "license": "MIT",
     "authors": [
@@ -11,5 +12,11 @@
             "name": "Audrius Bugas",
             "email": "audrius@hometogo.com"
         }
-    ]
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "HomeToGo\\": "src/HomeToGo/"
+        }
+    }
 }

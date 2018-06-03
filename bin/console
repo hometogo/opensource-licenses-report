@@ -5,4 +5,5 @@ use Symfony\Component\Console\Input\ArgvInput;
 include __DIR__.'/../vendor/autoload.php';
 $application = new \Symfony\Component\Console\Application('Licenses report');
 $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+$application->add(new HomeToGo\License\Command\GenerateReportCommand());
 $application->run(new ArgvInput(), $output);
