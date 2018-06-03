@@ -1,0 +1,15 @@
+{
+    "name": "hometogo/opensource-licenses-report",
+    "description": "Generates used opensource licenses report based on composer or yarn licenses list",
+    "type": "project",
+    "require": {
+        "symfony/console": "^4.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Audrius Bugas",
+            "email": "audrius@hometogo.com"
+        }
+    ]
+}
