@@ -1,0 +1,8 @@
+#!/usr/bin/env php
+
+<?php
+use Symfony\Component\Console\Input\ArgvInput;
+include __DIR__.'/../vendor/autoload.php';
+$application = new \Symfony\Component\Console\Application('Licenses report');
+$output = new \Symfony\Component\Console\Output\ConsoleOutput();
+$application->run(new ArgvInput(), $output);
