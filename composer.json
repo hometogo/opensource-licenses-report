@@ -4,7 +4,8 @@
     "type": "project",
     "require": {
         "symfony/console": "^4.1",
-        "composer/spdx-licenses": "^1.4"
+        "composer/spdx-licenses": "^1.4",
+        "twig/twig": "^2.4"
     },
     "license": "MIT",
     "authors": [

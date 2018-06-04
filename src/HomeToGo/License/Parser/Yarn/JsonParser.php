@@ -27,7 +27,7 @@ class JsonParser implements ParserInterface
                     $output[] = new Dependency(
                         $row[0],
                         $row[2],
-                        sprintf('https://yarn.pm/%s', $row[0]),
+                        sprintf('https://www.npmjs.com/package/%s', $row[0]),
                         Dependency::TYPE_JS,
                         [
                             $project => $row[1]

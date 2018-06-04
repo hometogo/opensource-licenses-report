@@ -3,6 +3,7 @@
 namespace HomeToGo\License\Command;
 
 use HomeToGo\License\Output\CsvOutput;
+use HomeToGo\License\Output\HtmlOutput;
 use HomeToGo\License\Output\TableOutput;
 use HomeToGo\License\ReportBuilder;
 use Symfony\Component\Console\Command\Command;
@@ -26,7 +27,7 @@ class GenerateReportCommand extends Command
                 'format',
                 'f',
                 InputOption::VALUE_REQUIRED,
-                'Output format. Possible values: text, csv',
+                'Output format. Possible values: text, csv, html',
                 'text'
             )->addOption(
                 'output',
@@ -63,8 +64,11 @@ class GenerateReportCommand extends Command
             case 'csv':
                 return new CsvOutput($input->getOption('output'));
                 break;
+            case 'html':
+                return new HtmlOutput($input->getOption('output'));
+                break;
         }
 
-        throw new \InvalidArgumentException('Supported formats csv, text');
+        throw new \InvalidArgumentException('Supported formats csv, text, html');
     }
 }
