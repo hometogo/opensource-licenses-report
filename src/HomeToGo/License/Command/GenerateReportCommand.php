@@ -2,6 +2,8 @@
 
 namespace HomeToGo\License\Command;
 
+use HomeToGo\License\Output\TableOutput;
+use HomeToGo\License\ReportBuilder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,6 +27,20 @@ class GenerateReportCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Placeholder');
+        $this->getOutput($input, $output)->output(
+            (new ReportBuilder())->build($input->getArgument('dir'))
+        );
+
+        $output->writeln('Done');
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return \HomeToGo\License\Output\OutputInterface
+     */
+    protected function getOutput(InputInterface $input, OutputInterface $output)
+    {
+        return (new TableOutput($output));
     }
 }

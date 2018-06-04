@@ -8,6 +8,9 @@ class Dependency
     const TYPE_PHP = 'php';
     const TYPE_JS = 'js';
 
+    const ENV_DEV = 'dev';
+    const ENV_PROD = 'prod';
+
     /** @var string */
     private $name;
 
@@ -20,31 +23,34 @@ class Dependency
     /** @var string */
     private $type;
 
+    /** @var array name => version */
+    private $projects;
+
     /** @var string */
-    private $project;
+    private $env;
 
     /**
      * @param string $name
      * @param string $license
      * @param string $link
      * @param string $type
-     * @param string $project
+     * @param array $projects
      */
-    public function __construct($name, $license, $link, $type, $project)
+    public function __construct($name, $license, $link, $type, array $projects)
     {
         $this->name = $name;
         $this->license = $license;
         $this->link = $link;
         $this->type = $type;
-        $this->project = $project;
+        $this->projects = $projects;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getProject()
+    public function getProjects()
     {
-        return $this->project;
+        return $this->projects;
     }
 
     /**
@@ -77,5 +83,38 @@ class Dependency
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @param string $project
+     * @param string $version
+     */
+    public function addProject($project, $version)
+    {
+        $this->projects[$project] = $version;
+    }
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->getName() . $this->getLicense();
+    }
+
+    /**
+     * @return string
+     */
+    public function getEnv()
+    {
+        return $this->env;
+    }
+
+    /**
+     * @param string $env
+     */
+    public function setEnv($env)
+    {
+        $this->env = $env;
     }
 }
