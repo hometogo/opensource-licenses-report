@@ -13,6 +13,7 @@ class ParserFactory
     const POS_ENV = 2;
 
     const TYPE_COMPOSER = 'composer';
+    const TYPE_YARN = 'yarn';
 
     /**
      * @param string $file
@@ -26,9 +27,12 @@ class ParserFactory
             case self::TYPE_COMPOSER:
                 return new JsonParser();
                 break;
+            case self::TYPE_YARN:
+                return new \HomeToGo\License\Parser\Yarn\JsonParser();
+                break;
         }
 
-        throw new UnknownFileFormatException('Unsupported file format %s', $file);
+        throw new UnknownFileFormatException(sprintf('Unsupported file format %s', $file));
     }
 
     /**
@@ -43,17 +47,17 @@ class ParserFactory
         $parts = explode('.', $name);
 
         if (count($parts) !== 4) {
-            throw new UnknownFileFormatException(
-                'Unsupported name. Expected name like myproject.composer.dev.json'
-            );
+            throw new UnknownFileFormatException('Unsupported name. Expected name like myproject.composer.dev.json');
         }
 
         $env = [Dependency::ENV_PROD, Dependency::ENV_DEV];
         if (!in_array($parts[self::POS_ENV], $env)) {
             throw new UnknownFileFormatException(
-                'Unsupported env %s, expected one of: %s',
-                $parts[self::POS_ENV],
-                join(',', $env)
+                sprintf(
+                    'Unsupported env %s, expected one of: %s',
+                    $parts[self::POS_ENV],
+                    join(',', $env)
+                )
             );
         }
 
