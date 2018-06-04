@@ -3,6 +3,7 @@
 namespace HomeToGo\License\Parser\Composer;
 
 use HomeToGo\License\Dependency;
+use HomeToGo\License\Parser\ParserFactory;
 use HomeToGo\License\Parser\ParserInterface;
 
 class JsonParser implements ParserInterface
@@ -16,6 +17,7 @@ class JsonParser implements ParserInterface
     {
         $out = [];
         $data = json_decode(file_get_contents($filename), true);
+        $project = (new ParserFactory())->parseFileName($filename, ParserFactory::POS_PROJECT);
 
         foreach ($data['dependencies'] as $name => $license) {
             $out[] = new Dependency(
@@ -24,7 +26,7 @@ class JsonParser implements ParserInterface
                 sprintf('https://packagist.org/packages/%s', $name),
                 'PHP',
                 [
-                    $data['name'] => $license['version']
+                    $project => $license['version']
                 ]
             );
         }
