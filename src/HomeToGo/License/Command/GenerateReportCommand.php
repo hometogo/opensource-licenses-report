@@ -3,6 +3,7 @@
 namespace HomeToGo\License\Command;
 
 use HomeToGo\License\Normalizer\Composite;
+use HomeToGo\License\Normalizer\Replacements;
 use HomeToGo\License\Normalizer\SPDXNormalizer;
 use HomeToGo\License\Output\CsvOutput;
 use HomeToGo\License\Output\HtmlOutput;
@@ -65,7 +66,9 @@ class GenerateReportCommand extends Command
         $this->getOutput($input, $output)->output(
             (new ReportBuilder())
                 ->setNormalizer(
-                    (new Composite())->addNormaliser(new SPDXNormalizer())
+                    (new Composite())
+                        ->addNormaliser(new SPDXNormalizer())
+                        ->addNormaliser(new Replacements())
                 )
                 ->build($input->getArgument('dir'))
                     ->setColumns($input->getOption('columns'))
