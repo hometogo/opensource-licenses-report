@@ -70,6 +70,14 @@ class Dependency
     }
 
     /**
+     * @param string $license
+     */
+    public function setLicense($license)
+    {
+        $this->license = $license;
+    }
+
+    /**
      * @return string
      */
     public function getLink()

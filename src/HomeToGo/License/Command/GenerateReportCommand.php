@@ -5,6 +5,7 @@ namespace HomeToGo\License\Command;
 use HomeToGo\License\Output\CsvOutput;
 use HomeToGo\License\Output\HtmlOutput;
 use HomeToGo\License\Output\TableOutput;
+use HomeToGo\License\Report;
 use HomeToGo\License\ReportBuilder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -35,6 +36,22 @@ class GenerateReportCommand extends Command
                 InputOption::VALUE_REQUIRED,
                 'Output file name',
                 'data/report.csv'
+            )->addOption(
+                'columns',
+                'c',
+                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+                'List only specific columns',
+                Report::DEFAULT_COLUMNS
+            )->addOption(
+                'project-columns',
+                'p',
+                InputOption::VALUE_NONE,
+                'Show project columns'
+            )->addOption(
+                'unique-lines',
+                'u',
+                InputOption::VALUE_NONE,
+                'Show unique lines'
             );
     }
 
@@ -45,6 +62,9 @@ class GenerateReportCommand extends Command
     {
         $this->getOutput($input, $output)->output(
             (new ReportBuilder())->build($input->getArgument('dir'))
+                ->setColumns($input->getOption('columns'))
+                ->setShowProjectColumns($input->getOption('project-columns') ? true : false)
+                ->setUnique($input->getOption('unique-lines') ? true : false)
         );
 
         $output->writeln('Done');

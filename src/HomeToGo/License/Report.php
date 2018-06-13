@@ -4,10 +4,58 @@ namespace HomeToGo\License;
 
 class Report
 {
+
+    const DEFAULT_COLUMNS = ['Name', 'Type', 'License', 'Environment', 'Link'];
+
     /**
      * @var Dependency[]
      */
     private $dependencies = [];
+
+    /**
+     * @var array
+     */
+    private $columns = self::DEFAULT_COLUMNS;
+
+    /**
+     * @var bool
+     */
+    private $showProjectColumns = true;
+
+    /**
+     * @var bool
+     */
+    private $unique = false;
+
+    /**
+     * @param array $columns
+     * @return Report
+     */
+    public function setColumns($columns)
+    {
+        $this->columns = $columns;
+        return $this;
+    }
+
+    /**
+     * @param bool $showProjectColumns
+     * @return Report
+     */
+    public function setShowProjectColumns($showProjectColumns)
+    {
+        $this->showProjectColumns = $showProjectColumns;
+        return $this;
+    }
+
+    /**
+     * @param bool $unique
+     * @return Report
+     */
+    public function setUnique($unique)
+    {
+        $this->unique = $unique;
+        return $this;
+    }
 
     /**
      * @return array
@@ -15,8 +63,8 @@ class Report
     public function getHeader()
     {
         return array_merge(
-            ['Name', 'Type', 'License', 'Environment', 'Link'],
-            $this->getProjectMap()
+            $this->columns,
+            $this->showProjectColumns ? $this->getProjectMap() : []
         );
     }
 
@@ -31,18 +79,38 @@ class Report
 
         foreach ($this->dependencies as $dependency) {
             $out[] = array_merge(
-                [
-                    $dependency->getName(),
-                    $dependency->getType(),
-                    $dependency->getLicense(),
-                    $dependency->getEnv(),
-                    $dependency->getLink()
-                ],
-                array_values(array_merge($map, $dependency->getProjects()))
+                array_values(
+                    array_intersect_key(
+                        [
+                            'Name' => $dependency->getName(),
+                            'Type' => $dependency->getType(),
+                            'License' => $dependency->getLicense(),
+                            'Environment' => $dependency->getEnv(),
+                            'Link' => $dependency->getLink()
+                        ],
+                        array_fill_keys($this->columns, 1)
+                    )
+                ),
+                $this->showProjectColumns ? array_values(array_merge($map, $dependency->getProjects())) : []
             );
         }
 
-        return $out;
+        return $this->unique ? $this->getUniqueLines($out) : $out;
+    }
+
+    /**
+     * @param array $table
+     * @return array
+     */
+    private function getUniqueLines($table)
+    {
+        $index = [];
+
+        foreach ($table as $line) {
+            $index[join('', $line)] = $line;
+        }
+
+        return array_values($index);
     }
 
     /**
