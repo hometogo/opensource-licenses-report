@@ -2,6 +2,8 @@
 
 namespace HomeToGo\License\Command;
 
+use HomeToGo\License\Normalizer\Composite;
+use HomeToGo\License\Normalizer\SPDXNormalizer;
 use HomeToGo\License\Output\CsvOutput;
 use HomeToGo\License\Output\HtmlOutput;
 use HomeToGo\License\Output\TableOutput;
@@ -61,10 +63,14 @@ class GenerateReportCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->getOutput($input, $output)->output(
-            (new ReportBuilder())->build($input->getArgument('dir'))
-                ->setColumns($input->getOption('columns'))
-                ->setShowProjectColumns($input->getOption('project-columns') ? true : false)
-                ->setUnique($input->getOption('unique-lines') ? true : false)
+            (new ReportBuilder())
+                ->setNormalizer(
+                    (new Composite())->addNormaliser(new SPDXNormalizer())
+                )
+                ->build($input->getArgument('dir'))
+                    ->setColumns($input->getOption('columns'))
+                    ->setShowProjectColumns($input->getOption('project-columns') ? true : false)
+                    ->setUnique($input->getOption('unique-lines') ? true : false)
         );
 
         $output->writeln('Done');
