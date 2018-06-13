@@ -11,7 +11,8 @@ class Replacements implements NormalizerInterface
     private $replacements = [
         'MIT License' => 'MIT',
         'Apache2' => 'Apache-2.0',
-        'LGPL Version 3' => 'LGPL-3.0'
+        'LGPL Version 3' => 'LGPL-3.0',
+        'Apache 2' => 'Apache-2.0'
     ];
 
     /**
