@@ -7,6 +7,8 @@ class Replacements implements NormalizerInterface
 
     const APACHE2 = 'Apache-2.0';
     const MIT = 'MIT';
+    const BSD = 'BSD';
+    const ISC = 'ISC';
 
     /**
      * @var array
@@ -14,6 +16,8 @@ class Replacements implements NormalizerInterface
     private $replacements = [
         'MIT License' => self::MIT,
         'MIT*' => self::MIT,
+        'BSD*' => self::BSD,
+        'ISC*' => self::ISC,
         'Apache2' => self::APACHE2,
         'LGPL Version 3' => 'LGPL-3.0',
         'Apache 2' => self::APACHE2,
